@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+    
+    
+  <head>
+    <meta charset="utf-8" />
+    <title>choropleth map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+      
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      h2,
+      h3 {
+        margin: 10px;
+        font-size: 18px;
+      }
+
+      h3 {
+        font-size: 16px;
+      }
+
+      p {
+        margin: 10px;
+      }
+
+      .map-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #fff;
+        margin-right: 20px;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+        border-radius: 3px;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      #features {
+        top: 0;
+        height: 100px;
+        margin-top: 20px;
+        width: 250px;
+      }
+
+      #legend {
+        padding: 10px;
+        box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+        line-height: 18px;
+        height: 150px;
+        margin-bottom: 40px;
+        width: 100px;
+      }
+
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+        
+        #slider-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+    </style>
+      
+  </head>
+    
+    
+    
+    
+  <body>
+      
+    <div id="map"></div>
+    <div class="map-overlay" id="slider-container">
+      <input id="slider" type="range" min="1960" max="2022" step="1" value="1960" />
+      <label for="slider" id="year">Year: 1960</label>
+      <div id="pd"><p>Hover over a country!</p></div>
+    </div>
+    <div class="map-overlay" id="legend"></div>
+
+  
+    <script>
+      // define access token
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY2t4dmljdG9yaWEiLCJhIjoiY2x3MGp4djZoMDIyNjJqbDhrdmd2M3dkayJ9.5yTuLojic4oDcv_RaWEiBw';
+      // create map
+      const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/ckxvictoria/clw0inlou00yl01pfewk87qdr',
+        center: [0, 0], // starting position [lng, lat], adjust as needed for your use case
+        zoom: 1, // starting zoom, adjust based on what you want to show initially
+        projection: 'winkelTripel' // setting the projection to Winkel Tripel
+    }); // map style URL from Mapbox Studio
+
+ 
+        // Create an array of the available data years
+        var years = [1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022
+        ];         
+        
+        
+
+          // wait for map to load before adjusting it
+          map.on('load', () => {
+
+
+            // Define a function to set the fill-color property based on the selected year
+            function Update(year) {
+                document.getElementById('year').textContent = `Year: ${year}`;
+                // Assuming your layer uses data-driven styling, you may need to update it like this:
+                map.setPaintProperty('yeargeometry-3pkgss', 'fill-color', [
+                    'interpolate',
+                    ['linear'],
+                    ['get', String(year)],
+                    0, '#5ea688',
+                    5, '#f2f2f2',
+                    9, '#fbacac',
+                    13, '#f47176',
+                    19, '#da2f35',
+                    25, '#6b1a1d'
+                  ]);
+            }          
+              
+            document.getElementById('slider').addEventListener('input', function(e) {
+                const year = parseInt(e.target.value, 10);
+                Update(year);
+            });
+
+              
+              
+            // make a pointer cursor
+            map.getCanvas().style.cursor = 'default';
+
+            // define layer names
+            const layers = ['0-1.52', '1.52-5', '5-9', '9-13', '13-19', '19+'];
+            const colors = ['#5ea688', '#f2f2f2', '#fbacac', '#f47176', '#da2f35', '#6b1a1d'];
+
+            // create legend
+            const legend = document.getElementById('legend');
+
+            layers.forEach((layer, i) => {
+              const color = colors[i];
+              const item = document.createElement('div');
+              const key = document.createElement('span');
+              key.className = 'legend-key';
+              key.style.backgroundColor = color;
+
+              const value = document.createElement('span');
+              value.innerHTML = `${layer}`;
+              item.appendChild(key);
+              item.appendChild(value);
+              legend.appendChild(item);
+            });
+
+            map.on('mousemove', 'yeargeometry-3pkgss', (event) => {
+              // Ensure there are features under the mouse pointer.
+              if (event.features.length > 0) {
+                const feature = event.features[0];
+                const name = feature.properties.name;
+                const population2022 = feature.properties['2022']; // Make sure '2022' is the correct property key
+
+                // Update the content of the overlay.
+                document.getElementById('pd').innerHTML = `<h3>${name}</h3><p><strong>${population2022}</strong> % age above 65</p>`;
+                map.getCanvas().style.cursor = 'pointer';
+              } else {
+                document.getElementById('pd').innerHTML = '<p>Hover over a country!</p>';
+                map.getCanvas().style.cursor = 'default';
+              }
+            });
+
+      });
+    </script>
+  </body>
+</html>
