@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="style.css">
+
+        <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #console { position: absolute; top: 0; left: 0; background-color: rgba(78, 78, 78, 0.9); z-index: 100; padding: 20px; }
+        #chart-container { width: 100%; height: 200px; margin-top: 20px; }
+        </style>
+    </head>
+
+    <body>
+        <div id="map"></div>
+        <div id="console" class="console-open">          
+            <h1>Bournemouth: Age-friendly City</h1> 
+            <p class="console-text">Two Aspects to be Age-friendly (WHO, 2007)</p>
+            <div class="session" id="key">
+                <ul id="list-group">
+                    <li class="list-group-item">
+                        <div class="colour-key" style="background-color: #ffc83e;"></div>
+                        Social participation
+                    </li>
+                    <li class="list-group-item">
+                        <div class="colour-key" style="background-color: rgb(102, 175, 240);"></div>
+                        Community support and health services
+                    </li>
+                </ul>
+            </div>
+            <div class="session" id="dropdown">
+                <div id="dropdown-titles">
+                    <div class="title" id="first-title">
+                        <h2>Topic: <span id="topic">All</span></h2>
+                    </div>
+                </div>
+                <select id="selectorTopic" class="selector" onchange="updateTopic()">
+                    <option value="ALL" selected="selected">All topics</option>
+                    <option value="Social participation">Social participation</option>
+                    <option value="Community support and health services">Community support and health services</option>
+                </select>  
+            </div>
+            <canvas id="myChart" width="300" height="300"></canvas>
+            <p class="credit">Data source: 
+                <a href="https://digimap.edina.ac.uk/roam/map/os">OS Digimap</a>.
+                <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">ONS Census</a>.
+            </p>
+        </div>
+        <div class="map-overlay" id="legend">
+            <div class='session'>
+                <p id="legend_text">The percentages of aging population by MSOA</p>
+                <div class="row colors">
+                    <div class="color-bar"></div>
+                </div>
+                <div class="row labels" id="label">
+                  <div class='label'>Min: 8.6901%</div>
+                  <div class='label'>Max: 42.3983%</div>
+                </div>
+             </div>
+        </div>
+        
+        
+        <script>
+            //Update the dropdown box
+            function updateTopic() {
+            var selectedTopic = document.getElementById("selectorTopic").value;
+            document.getElementById("topic").innerText = selectedTopic;
+            }
+            
+            
+            //Read in the map style from Mapbox
+            mapboxgl.accessToken = 'pk.eyJ1Ijoia2V5aTA3ODciLCJhIjoiY2x3MGp5cTh4MDFubTJobXVsNnZxc2ZndSJ9.RBQF_1OTUIu4NoVvYE56ng';  //Put your mapbox access token here
+
+                // Load a new map in the 'map' HTML div
+                var map = new mapboxgl.Map({
+                    container: 'map', // container id
+                    style: 'mapbox://styles/keyi0787/clvxrnp7r011l01qufcib0mtz', // Put your mapbox style ID here
+                    center: [-1.8804, 50.7217], // coordinates of Bournemouth [lng, lat]
+                    zoom: 12 // starting zoom
+                });
+            
+
+                // Function to update the bar chart data based on the selected layer
+                function updateBarChart(layer) {
+                    var data = barData[layer];
+                    // Update the bar chart data
+                    myChart.data.labels = Object.keys(data);
+                    myChart.data.datasets[0].data = Object.values(data);
+                    myChart.update();
+                }
+
+                //Make the point data update with the topic chosen
+                function Update(selectedLayer) {
+                    // Define an array containing the IDs or names of all layers in your Mapbox style
+                    var allLayers = ['ALL', 'Social participation', 'Community support and health services'];
+
+                    // Iterate through all layers and set visibility based on the selected layer
+                    allLayers.forEach(function(layer) {
+                        if (layer === selectedLayer) {
+                            // If the layer matches the selected layer, set visibility to 'visible'
+                            map.setLayoutProperty(layer, 'visibility', 'visible')
+                            updateBarChart(selectedLayer);
+                        } else {
+                            // If the layer does not match the selected layer, set visibility to 'none'
+                            map.setLayoutProperty(layer, 'visibility', 'none');
+                        }
+                    });
+                }
+
+                // Assign an event listener to the selector to call the Update function when the user changes the selection
+                document.getElementById('selectorTopic').addEventListener('change', function(e) {
+                    var selectedLayer = e.target.value;
+                    Update(selectedLayer);
+                });
+
+
+                //Define pop-up
+                var mypopup = new mapboxgl.Popup({offset:[150,50],closeButton: false});
+                // Function to show pop-up
+                function showPopup(e) {
+                    mypopup
+                        .setLngLat(e.lngLat)
+                        .setHTML("<h3>Name: " + e.features[0].properties.name + "</h3>Category: " + e.features[0].properties.categoryna + "<br />Class: " + e.features[0].properties.classname + "<br />Postcode: " + e.features[0].properties.postcode)
+                        .addTo(map);
+                }
+                // Event listener for each layer
+                map.on('mouseover', 'ALL', function (e) {
+                    showPopup(e);
+                });
+                map.on('mouseover', 'Social participation', function (e) {
+                    showPopup(e);
+                });
+                map.on('mouseover', 'Community support and health services', function (e) {
+                    showPopup(e);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the stations layer.
+                map.on('mouseenter', 'ALL', function () {
+                      map.getCanvas().style.cursor = 'pointer';
+                });
+                map.on('mouseenter', 'Social participation', function () {
+                      map.getCanvas().style.cursor = 'pointer';
+                });
+                map.on('mouseenter', 'Community support and health services', function () {
+                      map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves and remove the popup window.
+                map.on('mouseleave', 'ALL', function () {
+                    map.getCanvas().style.cursor = '';
+                    mypopup.remove();
+                });
+                map.on('mouseleave', 'Social participation', function () {
+                    map.getCanvas().style.cursor = '';
+                    mypopup.remove();
+                });
+                map.on('mouseleave', 'Community support and health services', function () {
+                    map.getCanvas().style.cursor = '';
+                    mypopup.remove();
+                });
+
+
+                //Update bar chart
+                // Define a dictionary to store the data for each layer
+                var barData = {
+                    'ALL': {
+                        'Social participation': 79,
+                        'Community support and health services': 229
+                    },
+                    'Social participation': {
+                        'Allotments': 7,
+                        'Halls and Community Centres': 24,
+                        'Libraries': 13,
+                        'Community Networks and Projects': 7,
+                        'Social Service Activities': 28
+                    },
+                    'Community support and health services': {
+                        'Hospitals': 2,
+                        'Dental Surgeries': 35,
+                        'Alternative, Natural and Complementary': 30,
+                        'Clinics and Health Centres': 52,
+                        'Nursing and Residential Care Homes': 110
+                    }
+                };
+
+                // Chart.js configuration for the bar chart
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Number of Point data',
+                            data: [],
+                            backgroundColor: 'rgba(206, 209, 204,0.5)',
+                            borderColor: 'rgba(206, 209, 204,1)',
+                            borderWidth: 1,
+                            barThickness: 20 // Adjust the bar thickness as needed
+                        }]
+                    },
+                    options: {
+                        responsive: false, // Disable responsiveness
+                        width: 120, // Set custom width
+                        height: 120, // Set custom height
+                        scales: {
+                            x: {
+                                color: 'white', // Set x-axis text color to white
+                                ticks: {
+                                    color: 'white' // Set x-axis tick text color to white
+                                }
+                            },
+                            y: {
+                                color: 'white', // Set y-axis text color to white
+                                ticks: {
+                                    color: 'white' // Set y-axis tick text color to white
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' // Set legend text color to white
+                                }
+                            }
+                        }
+                    }
+                });
+            
+            
+            //Basemap of aging population
+            map.on('load', function () {
+                // Add the Age-pop layer beneath the existing layers
+                map.addLayer({
+                    id: 'Age_pop',
+                    type: 'fill',
+                    source: {
+                        type: 'vector',
+                        url: 'mapbox://keyi0787.6o0ihflv' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Age_bournemouth-attd93', // name of tileset layer
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                        'fill-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'old_prc'],
+                            0.086901, // Use the minimum value directly
+                            'rgba(16, 198, 156, 0.1)',
+                            0.423983, // Use the maximum value directly
+                            'rgb(16, 198, 156)'
+                        ],
+                        'fill-opacity': 0.9,
+                    }
+                }, 'ALL'); // Add the layer before the 'ALL' layer
+                
+                map.addLayer({
+                    'id': 'MSOA',
+                    'type': 'symbol',
+                    'source': 'Age_pop',
+                    'source-layer': 'Age_bournemouth-attd93', // name of tilesets
+                    'layout': {
+                        'text-field': '{mso11nm}',
+                        'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+                        'text-size': {
+                             stops: [[11, 7], [12, 10]]
+                         },
+                    },
+                    'paint': {
+                        'text-color': 'rgba(107, 102, 102, 0.9)'
+                    }
+                });
+                
+                updateBarChart('ALL')
+                
+            });
+
+        </script>
+    </body>
+</html>
