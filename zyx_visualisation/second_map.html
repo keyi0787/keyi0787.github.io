@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>England and Wales Employment and Population Density 3D Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+    <style>
+body { margin:0; padding:0; }
+#map { position:absolute; top:0; bottom:0; width:100%; }
+
+#choose {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 25%;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.map-overlay table {
+    border: none;
+    width: 200px;
+}
+
+.map-overlay h2 {
+    line-height: 24px;
+    display: block;
+    margin: 0 0 10px;
+}
+
+.map-overlay label {
+    font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    vertical-align: bottom;
+    margin: 0;
+    padding: 0;
+}
+
+.map-overlay .legend .bar {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to right, #FCA107, #7F3121);
+}
+
+.map-overlay input {
+    display: inline;
+    vertical-align: middle;
+    margin: 5px;
+    padding: 0;
+}
+
+.map-overlay p.credit {
+   margin: 5px 0 0 0;
+   padding: 0;
+}
+
+#legend {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgb(252, 252, 253);
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+  width: 285px;
+  height: 70px;
+}
+
+.color-bar {
+  background: linear-gradient(to right, rgba(16, 198, 156, 0.1), rgb(16, 198, 156));
+  margin-left: 40px; /* Adjust the margin */
+  margin-top: 5px;
+  width: 200px; /* Adjust the width */
+  height: 10px; /* Adjust the height */
+  display: inline-block; /* Corrected property value */
+}
+
+.label {
+  width: 45%;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+#legend_text {
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+  text-align: center;
+}
+        
+.cityfly {
+    font-size: 15px;
+    width: 200px;
+}
+
+    </style>
+</head>
+<body>
+
+
+<div id='map'></div>
+
+<div class='map-overlay' id="choose">
+    <div class='map-overlay-inner'>
+        <h2>England and Wales Employment and Population Density 2011</h2>
+		<table><tr><td>
+  		<input type="radio" name="layers" id="layer1" value="Employment" checked><label>Aging population 3D &nbsp; &nbsp;</label>
+  		<input type="radio" name="layers" id="layer2" value="Residents"><label>Aging population 2D </label>
+         </td>
+         </tr>
+         <tr><td> <p class="cityfly">Fly To Low-ageing cities: 
+            <a href="#" class="citylink" id="lond">London</a> &nbsp;
+            <a href="#" class="citylink" id="Leed">Leeds</a> &nbsp;
+            <a href="#" class="citylink" id="Manc">Manchester</a>
+        </p>
+        <p class="cityfly">Fly To High-ageing cities:
+            <a href="#" class="citylink" id="bour">Bournemouth</a> &nbsp;
+            <a href="#" class="citylink" id="Wort">Worthing</a> &nbsp;
+            <a href="#" class="citylink" id="Sout">Southend</a>
+        </p>
+         </td></tr>
+         </table>
+        <p class="credit">Data source: 
+            <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">Census 2011, Office for Nat. Statistics</a >.
+        </p >
+</div>
+</div>
+<div class="map-overlay" id="legend">
+            <div class='session'>
+                <p id="legend_text">The percentages of aging population by MSOA</p >
+                <div class="row colors">
+                    <div class="color-bar"></div>
+                </div>
+                <div class="row labels" id="label">
+                  <div class='label'>Min: 0.6901%</div>
+                  <div class='label'>Max: 59.3983%</div>
+                </div>
+             </div>
+</div>
+
+
+
+
+    <script>
+
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoieWl4aWFvemhhbyIsImEiOiJjbHI3cjZuNHowd2xsMmtweGduZXprZmZ6In0.PP8ZZ29_wQekzXNWsjV29w'; // Put your Mapbox Public Access token here
+
+    // Load a new map in the 'map' HTML div
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/yixiaozhao/clvxcq7ti029901qp2pfpfoeb', // map background layer location
+    center: [0, 51.5], // starting position [lng, lat]
+    zoom: 8, // starting zoom
+    pitch: 50 // tilt of the viewpoint in degrees
+    });
+
+
+    map.on('load', function() {
+      // Set global light properties which influence 3D layer shadows
+      map.setLight({color: "#fff", intensity: 0.15, position: [1.15, 210, 30]});
+      // Add standard navigation control
+      map.addControl(new mapboxgl.NavigationControl());
+
+    // Load the 3D employment hexagon layer as a fill-extrusion type
+      map.addLayer({
+        id: 'EngWal_Hex_Emp',
+        type: 'fill-extrusion',
+        source: {
+          type: 'vector',
+          url: 'mapbox://yixiaozhao.9hr5ar78' // Your Mapbox tileset Map ID
+        },
+        'source-layer': 'Data-avpp0m', // name of tileset
+        paint: {
+            'fill-extrusion-color': {
+                property: 'old_percen',
+                type: 'exponential',
+                stops: [
+                    [0, '#dffbf8'],
+                    [0.1, '#dffbf8'],
+                    [0.3, '#88ddc9'],
+                    [0.4, '#10c69c'],
+                    [0.5, '#066f57']]
+            },
+            'fill-extrusion-height': [
+            'case',
+            ['<', ['get', 'old_percen'], 0.1], 
+            ['*', ['number', ['get', 'old_percen'], 10], 1000], // 
+            ['<', ['get', 'old_percen'], 0.3],
+            ['*', ['number', ['get', 'old_percen'], 10], 5000], // 
+            ['*', ['number', ['get', 'old_percen'], 10], 30000]  // 
+        ],  //expression that controls the extrusion height based on employment attribute Emp2011
+            'fill-extrusion-base': 0,
+            'fill-extrusion-opacity': 1,
+            'fill-extrusion-opacity-transition': {  //Opacity transition adds a delay when changing the opacity for a smooth layer change effect
+                 duration: 1000,
+                 delay: 0
+             }
+            }
+      });
+
+// Add the label layer
+	map.addLayer({
+		'id': 'labels',
+		'type': 'symbol',
+        source: {
+          type: 'vector',
+          url: 'mapbox://yixiaozhao.6mw0f7p0' // Your Mapbox tileset Map ID
+        },
+		'source-layer': 'gb-1k8vmz', // name of tilesets
+		'layout': {
+			'text-field': '{city}',
+			'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+			    'text-size': [
+        'interpolate',
+        ['linear'],
+        ['get', 'population'],
+        24903, 4, // Font size when population is 0
+        1000000, 14 // Font size when population is 1,000,000
+    ]
+		},
+		'paint': {
+			'text-color': 'rgba(0, 128, 128,0.8)',
+			'text-halo-color': '#fff',
+			'text-halo-width': 1
+		}
+	});
+
+//Event listener for layer switch
+document.getElementById("layer1").addEventListener("click", function(){
+map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0.95);
+});
+
+document.getElementById("layer2").addEventListener("click", function(){
+map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0);
+});
+
+
+//Event listener for the zoom to buttons created using a for loop and switch case statement to set lat and long
+var x = document.getElementsByClassName('citylink');
+var i;
+		for (i = 0; i < x.length; i++) {
+			x[i].addEventListener('click', function(e) {
+
+				var lat,long;
+
+				switch(e.target.id) {
+					case "lond": long=-0.1278; lat=51.5074; break;
+                    case "Leed": long=-1.5491; lat=53.8008; break;
+                    case "Manc": long=-2.2426; lat=53.4808; break;
+                    case "bour": long=-1.88	; lat=50.72; break;
+                    case "Wort": long=-0.3728; lat=50.8179; break;
+					case "Sout": long=0.7073; lat=51.5450; break;
+				}
+
+				map.flyTo({
+					center: [long,lat],
+					zoom: 9,
+					speed: 0.3,
+					pitch: 50
+					});
+			});
+		}
+
+});
+
+</script>
+
+</body>
+</html>
