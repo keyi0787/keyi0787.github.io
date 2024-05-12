@@ -1,0 +1,194 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'PT Sans', Helvetica, Arial, Sans-serif;
+  }
+  
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 800px;
+}
+  
+h1 {
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 30px;
+  color: #ffffff;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+h2 {
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  color: #ffc83e;
+}
+
+h3 {
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.console-text {
+  color: #e2e2e2;
+  font-family: 'PT Serif';
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #bdbdbd;
+}
+  
+#console {
+  position: absolute;
+  width: 400px;
+  margin: 5px;
+  padding: 10px 20px;
+  padding-right: 35px;
+  background-color: rgba(78, 78, 78, 0.9);
+  border-radius: 5px;
+  z-index: 5;
+}
+
+.session {
+  margin-bottom: 3px;
+}
+
+.label-title {
+  color: #bfc2bd;
+  font-weight: bold;
+}
+
+#dropdown-titles {
+  width: 100%;
+}
+
+.title {
+  display: inline-block;
+}
+
+#first-title {
+  width: 400px;
+}
+
+p {
+  margin-top: 2px;
+  margin-bottom: 0px;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(https://www.carbonbrief.org/wp-content/uploads/2018/04/arrow-for-map.png) 96% / 15% no-repeat #333333;
+  background-size: 20px 13px;
+  border:2px;
+  padding: 4px;
+  color: #f3f3f3;
+  outline:0px;
+}
+
+.selector {
+ width: 270px;
+}
+
+
+/* style the map tooltip */
+/* #region */
+
+.mapboxgl-popup-content {
+  color: #F3F3DD;
+  background-color: #383838;
+  /* border-color: #91785D; */
+  max-width: 250px;
+  /* box-shadow: 3px 3px 2px #8B5D33; */
+}
+
+
+/* style the key */
+/* #region */
+
+.colour-key {
+  width: 12px;
+  height: 12px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#list-group {
+  padding: 0px;
+}
+
+li {
+  color: #e9e9e9;
+  font-size: 12.5px;
+  float: left;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+
+.map-overlay {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgb(252, 252, 253);
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+  width: 285px;
+  height: 70px;
+}
+
+.color-bar {
+  background: linear-gradient(to right, rgba(16, 198, 156, 0.1), rgb(16, 198, 156));
+  margin-left: 40px; /* Adjust the margin */
+  margin-top: 5px;
+  width: 200px; /* Adjust the width */
+  height: 10px; /* Adjust the height */
+  display: inline-block; /* Corrected property value */
+}
+
+.label {
+  width: 45%;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+#legend_text {
+  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+  text-align: center;
+}
+
+
+.credit {
+  color: #e2e2e2;
+  font-family: 'PT Serif';
+  font-size: 10px;
+  margin-top: 5px;
+}
