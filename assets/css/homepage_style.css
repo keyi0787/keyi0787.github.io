@@ -773,6 +773,11 @@ section {
   padding: 0px 0;
 }
 
+.recap .row {
+  display: flex;
+  justify-content: center;
+}
+
 .recap .member {
   border: 2px solid #fff;
   margin-bottom: 30px;
