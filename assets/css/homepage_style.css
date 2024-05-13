@@ -486,54 +486,54 @@ section {
 
 
 /*--------------------------------------------------------------
-# Job
+# ckx
 --------------------------------------------------------------*/
 
-.job{
+.ckx{
   padding-bottom: 30px;
 }
 
-.job .content {
+.ckx .content {
   margin-top: 60px;
   margin-right: 30px;
   padding-right: 40px ;
 }
 
-.job .content h3 {
+.ckx .content h3 {
   font-weight: 400;
   font-size: 26px;
 }
 
-.job .content p {
+.ckx .content p {
   font-weight: 200;
   font-size: 13px;
 }
 
-.job .content ul {
+.ckx .content ul {
   list-style: none;
   padding: 0;
 }
 
-.job .content ul li {
+.ckx .content ul li {
   padding-bottom: 10px;
 }
 
-.job .content ul i {
+.ckx .content ul i {
   font-size: 20px;
   padding-right: 4px;
   color: #cc1616;
 }
 
-.job .content p:last-child {
+.ckx .content p:last-child {
   margin-bottom: 0;
 }
 
-.job .maps {
+.ckx .maps {
   margin-left: 0px;
   margin-top: 60px;
 }
 
-#job .btn-get-started {
+#ckx .btn-get-started {
   font-family: "Varela Round", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -548,54 +548,54 @@ section {
   color: #fff;
 }
 
-#job .btn-get-started:hover {
+#ckx .btn-get-started:hover {
   background: #AD343E;
   border-color: #AD343E;
   color: #fff;
   opacity: 1;
 }
 
-#job .button {
+#ckx .button {
   text-align: center;
 }
 
 
 /*--------------------------------------------------------------
-# Full Time Part Time
+# zyx
 --------------------------------------------------------------*/
 
-.fullpart {
+.zyx {
   margin-top: 0px;
   margin-bottom: 60px;
   background-color: #fff;
   padding-top: 0px;
 }
 
-.fullpart .content {
+.zyx .content {
   margin-top: 50px;
   margin-right: 0px;
   padding-right: 0px ;
 }
 
-.fullpart .content h3 {
+.zyx .content h3 {
   font-weight: 400;
   font-size: 28px;
   text-align: right;
 }
 
-.fullpart .content p {
+.zyx .content p {
   font-weight: 200;
   font-size: 14px;
   text-align: right;
 }
 
-.fullpart p {
+.zyx p {
   font-weight: 200;
   font-size: 14px;
   text-align: justify;
 }
 
-.fullpart .content2 p {
+.zyx .content2 p {
   font-weight: 200;
   font-size: 14px;
   text-align: justify;
@@ -603,31 +603,31 @@ section {
   margin-bottom: 5px;
 }
 
-.fullpart .content ul {
+.zyx .content ul {
   list-style: none;
   padding: 0;
 }
 
-.fullpart .content ul li {
+.zyx .content ul li {
   padding-bottom: 10px;
 }
 
-.fullpart .content ul i {
+.zyx .content ul i {
   font-size: 20px;
   padding-right: 4px;
   color: #cc1616;
 }
 
-.fullpart .content p:last-child {
+.zyx .content p:last-child {
   margin-bottom: 0;
 }
 
-.fullpart .maps {
+.zyx .maps {
   margin-left: 0px;
   margin-top: 60px;
 }
 
-#fullpart .btn-get-started {
+#zyx .btn-get-started {
   font-family: "Varela Round", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -642,14 +642,14 @@ section {
   color: #fff;
 }
 
-#fullpart .btn-get-started:hover {
+#zyx .btn-get-started:hover {
   background: #AD343E;
   border-color: #AD343E;
   color: #fff;
   opacity: 1;
 }
 
-#fullpart .button {
+#zyx .button {
   text-align: center;
 }
 
@@ -725,58 +725,58 @@ section {
 }
 
 /*--------------------------------------------------------------
-# wfh
+# lky
 --------------------------------------------------------------*/
-.wfh{
+.lky{
   padding: 0 0 0 0;
   margin-bottom: 50px;
   margin-top: 80px;
 }
 
-.wfh .section-title{
+.lky .section-title{
   padding-bottom: 0;
 }
 
-.wfh .content {
+.lky .content {
   padding-right: 0px;
   background-color: #fff;
   margin-bottom: 0px;
 }
 
-.wfh .content h3 {
+.lky .content h3 {
   font-weight: 600;
   font-size: 26px;
   text-align: center;
   padding-top: 30px;
 }
 
-.wfh .content ul {
+.lky .content ul {
   list-style: none;
   padding: 0;
 }
 
-.wfh .content ul li {
+.lky .content ul li {
   padding-bottom: 10px;
 }
 
-.wfh .content ul i {
+.lky .content ul i {
   font-size: 20px;
   padding-right: 4px;
   color: #cc1616;
 }
 
-.wfh .content p:last-child {
+.lky .content p:last-child {
   margin-bottom: 0;
 }
 
-.wfh .content2 {
+.lky .content2 {
   padding-right: 0px;
   background-color: #fff;
   margin-bottom: 0px;
   text-align: center;
 }
 
-#wfh .btn-get-started {
+#lky .btn-get-started {
   font-family: "Varela Round", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -791,14 +791,14 @@ section {
   color: #fff;
 }
 
-#wfh .btn-get-started:hover {
+#lky .btn-get-started:hover {
   background: #AD343E;
   border-color: #AD343E;
   color: #fff;
   opacity: 1;
 }
 
-#wfh .button {
+#lky .button {
   text-align: center;
 }
 
