@@ -833,6 +833,11 @@ section {
 /*--------------------------------------------------------------
 # Teams
 --------------------------------------------------------------*/
+.teams .row {
+  display: flex; /* Use flexbox layout */
+  justify-content: center; /* Center content horizontally */
+}
+
 .teams .member {
   text-align: center;
   margin-bottom: 20px;
