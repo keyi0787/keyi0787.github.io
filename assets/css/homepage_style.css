@@ -834,8 +834,8 @@ section {
 # Teams
 --------------------------------------------------------------*/
 .teams .row {
-  display: flex; /* Use flexbox layout */
-  justify-content: center; /* Center content horizontally */
+  display: flex;
+  justify-content: center;
 }
 
 .teams .member {
