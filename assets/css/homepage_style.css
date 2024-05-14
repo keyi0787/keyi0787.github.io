@@ -579,14 +579,15 @@ section {
 
 .zyx .content h3 {
   font-weight: 400;
-  font-size: 28px;
+  font-size: 25px;
   text-align: right;
 }
 
 .zyx .content p {
   font-weight: 200;
-  font-size: 14px;
+  font-size: 15px;
   text-align: right;
+  color: black;
 }
 
 .zyx p {
