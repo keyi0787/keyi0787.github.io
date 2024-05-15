@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>UK Aging Population Density</title>
+    <title>England ageing Density Map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
     <style>
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }
+
 
 #choose {
     font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -29,7 +30,7 @@ body { margin:0; padding:0; }
 
 .map-overlay table {
     border: none;
-    width: 200px;
+    width: 150px;
 }
 
 .map-overlay h2 {
@@ -107,6 +108,8 @@ body { margin:0; padding:0; }
     width: 200px;
 }
 
+
+
     </style>
 </head>
 <body>
@@ -116,7 +119,7 @@ body { margin:0; padding:0; }
 
 <div class='map-overlay' id="choose">
     <div class='map-overlay-inner'>
-        <h2>England and Wales Employment and Population Density 2011</h2>
+        <h2>England Ageing Density Map</h2>
 		<table><tr><td>
   		<input type="radio" name="layers" id="layer1" value="Employment" checked><label>Aging population 3D &nbsp; &nbsp;</label>
   		<input type="radio" name="layers" id="layer2" value="Residents"><label>Aging population 2D </label>
@@ -151,9 +154,11 @@ body { margin:0; padding:0; }
                 </div>
              </div>
 </div>
-
-
-
+    <div class='map-overlay' id="local">
+    <div class='map-overlay-inner'>
+        <h2 id="TCITY15NM">Hover over a local authority</h2>
+	</div>
+</div>
 
     <script>
 
@@ -213,40 +218,73 @@ body { margin:0; padding:0; }
             }
       });
 
+
 // Add the label layer
 	map.addLayer({
 		'id': 'labels',
 		'type': 'symbol',
         source: {
           type: 'vector',
-          url: 'mapbox://yixiaozhao.6mw0f7p0' // Your Mapbox tileset Map ID
+          url: 'mapbox://yixiaozhao.7pgtmqoj' // Your Mapbox tileset Map ID
         },
-		'source-layer': 'gb-1k8vmz', // name of tilesets
+		'source-layer': 'merged_data-0v6k84', // name of tilesets
 		'layout': {
-			'text-field': '{city}',
+			'text-field': '{Town/City}',
 			'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
 			    'text-size': [
         'interpolate',
         ['linear'],
-        ['get', 'population'],
-        24903, 4, // Font size when population is 0
-        1000000, 14 // Font size when population is 1,000,000
+        ['get', 'Population aged 65-85'],
+        8.76, 4, // Font size when population is 0
+        23.18, 14 // Font size when population is 1,000,000
     ]
 		},
 		'paint': {
-			'text-color': 'rgba(0, 128, 128,0.8)',
+			'text-color': 'rgba(150, 200, 0,0.8)',
 			'text-halo-color': '#fff',
 			'text-halo-width': 1
 		}
 	});
 
+// 保存对弹出窗口的引用
+var popup;
+
+// 鼠标进入图层时显示数值
+map.on('mouseenter', 'labels', function (e) {
+    var townCity = e.features[0].properties['Town/City'];
+    var population65to85 = e.features[0].properties['Population aged 65-85'];
+    var population85plus = e.features[0].properties['Population aged 85+'];
+    var totalElderlyPopulation = population65to85 + population85plus;
+    var rank = e.features[0].properties['Rank'];
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    
+    // 创建弹出窗口
+    popup = new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML('<h3>' + townCity + '</h3><p>Population aged 65-85: ' + population65to85 + '</p><p>Population aged 85+: ' + population85plus + '</p><p>Total Elderly Population: ' + totalElderlyPopulation + '</p><p>Rank: ' + rank + '</p>')
+        .addTo(map);
+});
+
+// 鼠标离开图层时自动移除弹出窗口
+map.on('mouseleave', 'labels', function () {
+    map.getCanvas().style.cursor = '';
+    if (popup) {
+        popup.remove();
+    }
+});
+
+
+
+        
 //Event listener for layer switch
 document.getElementById("layer1").addEventListener("click", function(){
 map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0.95);
+map.setPitch(50); 
 });
 
 document.getElementById("layer2").addEventListener("click", function(){
 map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0);
+map.setPitch(0); 
 });
 
 
