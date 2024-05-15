@@ -316,7 +316,7 @@ h6 {
 #hero {
   width: 100%;
   height: calc(110vh - 110px);
-  background: url("https://blog.socialcops.com/wp-content/uploads/2016/06/Featured-Image-v2-1.jpg") top center;
+  background: url("../img/hero.jpg") top center;
   background-size: cover;
   position: relative;
 }
