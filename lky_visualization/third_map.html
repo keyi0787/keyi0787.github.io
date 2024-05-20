@@ -1,27 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>Exploring Bournemouth</title>
-        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
         <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="stylesheet" href="style.css">
 
-        <style>
-        body { margin: 0; padding: 0; }
-        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-        #console { position: absolute; top: 0; left: 0; background-color: rgba(78, 78, 78, 0.9); z-index: 100; padding: 20px; }
-        #chart-container { width: 100%; height: 200px; margin-top: 20px; }
-        </style>
     </head>
 
     <body>
         <div id="map"></div>
         <div id="console" class="console-open">          
             <h1>Bournemouth: Age-friendly City</h1> 
-            <p class="console-text">Two Aspects to be Age-friendly (WHO, 2007)</p>
+            <h2 class="console-text">Two Aspects to be Age-friendly (WHO, 2007)</h2>
             <div class="session" id="key">
                 <ul id="list-group">
                     <li class="list-group-item">
@@ -34,6 +28,7 @@
                     </li>
                 </ul>
             </div>
+            <p class="console-text" id="instruction">Hover over a point to get more details!</p>
             <div class="session" id="dropdown">
                 <div id="dropdown-titles">
                     <div class="title" id="first-title">
@@ -46,23 +41,17 @@
                     <option value="Community support and health services">Community support and health services</option>
                 </select>  
             </div>
+            
             <canvas id="myChart" width="300" height="300"></canvas>
+            <p class="console-text" id="instruction">Mouse over the bar to see detailed data!</p>
             <p class="credit">Data source: 
                 <a href="https://digimap.edina.ac.uk/roam/map/os">OS Digimap</a>.
                 <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">ONS Census</a>.
             </p>
         </div>
-        <div class="map-overlay" id="legend">
-            <div class='session'>
-                <p id="legend_text">The percentages of aging population by MSOA</p>
-                <div class="row colors">
-                    <div class="color-bar"></div>
-                </div>
-                <div class="row labels" id="label">
-                  <div class='label'>Min: 8.6901%</div>
-                  <div class='label'>Max: 42.3983%</div>
-                </div>
-             </div>
+        <div class="map-overlay">
+            <p id="legend_text">The percentages of aging population by MSOA</p>
+            <div class='session' id="legend"></div>
         </div>
         
         
@@ -81,7 +70,7 @@
                 var map = new mapboxgl.Map({
                     container: 'map', // container id
                     style: 'mapbox://styles/keyi0787/clvxrnp7r011l01qufcib0mtz', // Put your mapbox style ID here
-                    center: [-1.8804, 50.7217], // coordinates of Bournemouth [lng, lat]
+                    center: [-1.89, 50.74], // coordinates of Bournemouth [lng, lat]
                     zoom: 12 // starting zoom
                 });
             
@@ -241,6 +230,40 @@
                     type: 'fill',
                     source: {
                         type: 'vector',
+                        url: 'mapbox://keyi0787.19gqgzha' // Your Mapbox tileset Map ID
+                    },
+                    'source-layer': 'Age_pop1-6nf354', // name of tileset layer
+                    'layout': {
+                        'visibility': 'visible'
+                    },
+                    paint: {
+                            'fill-color': [
+                                "interpolate",
+                                ["linear"],
+                                ["get", "old_prc"],
+                                 0,
+                                 "rgb(69, 117, 180)",
+                                 0.064,
+                                 "rgb(145, 191, 219)",
+                                 0.128,
+                                 "rgb(224, 243, 248)",
+                                 0.256,
+                                 "rgb(254, 224, 144)",
+                                 0.384,
+                                 "rgb(252, 141, 89)",
+                                 0.511934673,
+                                 "rgb(215, 48, 39)"
+                            ],
+                          'fill-opacity': 0.9,
+                    }
+                }, 'ALL'); // Add the layer before the 'ALL' layer
+                
+                // Add an outline layer for the Bournemouth polygons
+                map.addLayer({
+                    id: 'Bournemouth-outline',
+                    type: 'line',
+                    source: {
+                        type: 'vector',
                         url: 'mapbox://keyi0787.6o0ihflv' // Your Mapbox tileset Map ID
                     },
                     'source-layer': 'Age_bournemouth-attd93', // name of tileset layer
@@ -248,23 +271,15 @@
                         'visibility': 'visible'
                     },
                     paint: {
-                        'fill-color': [
-                            'interpolate',
-                            ['linear'],
-                            ['get', 'old_prc'],
-                            0.086901, // Use the minimum value directly
-                            'rgba(16, 198, 156, 0.1)',
-                            0.423983, // Use the maximum value directly
-                            'rgb(16, 198, 156)'
-                        ],
-                        'fill-opacity': 0.9,
+                        'line-color': 'rgba(107, 102, 102, 0.9)', // color of the outline, here it is black
+                        'line-width': 1 // adjust the width as needed
                     }
-                }, 'ALL'); // Add the layer before the 'ALL' layer
+                }, 'ALL');
                 
                 map.addLayer({
                     'id': 'MSOA',
                     'type': 'symbol',
-                    'source': 'Age_pop',
+                    'source': 'Bournemouth-outline',
                     'source-layer': 'Age_bournemouth-attd93', // name of tilesets
                     'layout': {
                         'text-field': '{mso11nm}',
@@ -278,7 +293,29 @@
                     }
                 });
                 
+                //update the bar chart when loading the map
                 updateBarChart('ALL')
+                
+                //LEGEND
+                // define layer names
+                const layers = ['0%', '6.4%', '12.8%', '25.6%', '38.4%', '51.2%'];
+                const colors = ['rgb(69, 117, 180)', 'rgb(145, 191, 219)', 'rgb(224, 243, 248)', 'rgb(254, 224, 144)', 'rgb(252, 141, 89)', 'rgb(215, 48, 39)'];
+                // create legend
+                const legend = document.getElementById('legend');
+
+                layers.forEach((layer, i) => {
+                  const color = colors[i];
+                  const item = document.createElement('div');
+                  const key = document.createElement('span');
+                  key.className = 'legend-key';
+                  key.style.backgroundColor = color;
+
+                  const value = document.createElement('span');
+                  value.innerHTML = `${layer}`;
+                  item.appendChild(key);
+                  item.appendChild(value);
+                  legend.appendChild(item);
+                });
                 
             });
 
