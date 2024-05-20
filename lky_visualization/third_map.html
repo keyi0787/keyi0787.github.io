@@ -19,11 +19,11 @@
             <div class="session" id="key">
                 <ul id="list-group">
                     <li class="list-group-item">
-                        <div class="colour-key" style="background-color: #ffc83e;"></div>
+                        <div class="colour-key" style="background-color: rgb(41, 188, 132);"></div>
                         Social participation
                     </li>
                     <li class="list-group-item">
-                        <div class="colour-key" style="background-color: rgb(102, 175, 240);"></div>
+                        <div class="colour-key" style="background-color: rgb(199, 129, 218);"></div>
                         Community support and health services
                     </li>
                 </ul>
@@ -64,7 +64,7 @@
             
             
             //Read in the map style from Mapbox
-            mapboxgl.accessToken = 'pk.eyJ1Ijoia2V5aTA3ODciLCJhIjoiY2x3MGp5cTh4MDFubTJobXVsNnZxc2ZndSJ9.RBQF_1OTUIu4NoVvYE56ng';  //Put your mapbox access token here
+            mapboxgl.accessToken = 'pk.eyJ1Ijoia2V5aTA3ODciLCJhIjoiY2x3ZjFlcng4MW10dzJxcW1ydzgwbXF0aCJ9.sihf8PLpH5f3nlSb3JyC6A';  //Put your mapbox access token here
 
                 // Load a new map in the 'map' HTML div
                 var map = new mapboxgl.Map({
@@ -291,10 +291,16 @@
                     'paint': {
                         'text-color': 'rgba(107, 102, 102, 0.9)'
                     }
-                });
+                }, 'ALL');
+                
+                // Ensure 'ALL', 'Social participation', and 'Community support and health services' layers are correctly ordered
+                map.moveLayer('Community support and health services', 'Social participation');
+                map.moveLayer('Age_pop', 'Community support and health services');
+                
                 
                 //update the bar chart when loading the map
                 updateBarChart('ALL')
+                
                 
                 //LEGEND
                 // define layer names
