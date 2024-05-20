@@ -16,6 +16,7 @@
         <div id="console" class="console-open">          
             <h1>Bournemouth: Age-friendly City</h1> 
             <h2 class="console-text">Two Aspects to be Age-friendly (WHO, 2007)</h2>
+            <p class="console-text" id="instruction">Hover over a point to get more details!</p>
             <div class="session" id="key">
                 <ul id="list-group">
                     <li class="list-group-item">
@@ -28,7 +29,6 @@
                     </li>
                 </ul>
             </div>
-            <p class="console-text" id="instruction">Hover over a point to get more details!</p>
             <div class="session" id="dropdown">
                 <div id="dropdown-titles">
                     <div class="title" id="first-title">
@@ -39,11 +39,10 @@
                     <option value="ALL" selected="selected">All topics</option>
                     <option value="Social participation">Social participation</option>
                     <option value="Community support and health services">Community support and health services</option>
-                </select>  
+                </select>
+                <p class="console-text" id="instruction">Mouse over the bar to see detailed data!</p>
             </div>
-            
             <canvas id="myChart" width="300" height="300"></canvas>
-            <p class="console-text" id="instruction">Mouse over the bar to see detailed data!</p>
             <p class="credit">Data source: 
                 <a href="https://digimap.edina.ac.uk/roam/map/os">OS Digimap</a>.
                 <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">ONS Census</a>.
