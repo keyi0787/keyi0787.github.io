@@ -316,7 +316,7 @@ h6 {
 #hero {
   width: 100%;
   height: calc(110vh - 110px);
-  background: url("../img/landing_bg.jpg") top center;
+  background: url("../img/hero.jpg") top center;
   background-size: cover;
   position: relative;
 }
@@ -380,8 +380,6 @@ h6 {
     text-align: center;
   }
 
-  
-
   #hero h1 {
     font-size: 28px;
     line-height: 36px;
@@ -421,9 +419,9 @@ section {
 
 .section-title h3 {
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 100px;
   padding-bottom: 0;
   color: #191919;
   position: relative;
