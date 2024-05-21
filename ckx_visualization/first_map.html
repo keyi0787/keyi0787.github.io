@@ -266,11 +266,11 @@
               let myChart;
               function initializeChart() {
                 svg = d3.select("#chartContainer").append("svg")
-                  .attr("width", 400)
-                  .attr("height", 260);
+                  .attr("width", 350)
+                  .attr("height", 240);
 
                 myChart = new dimple.chart(svg, []);
-                myChart.setBounds(60, 5, 270, 200);
+                myChart.setBounds(60, 5, 270, 180);
 
                 const x = myChart.addTimeAxis("x", "Year", "%Y", "%Y");
                 x.timeInterval = 10;
