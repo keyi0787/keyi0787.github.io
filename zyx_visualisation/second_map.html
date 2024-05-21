@@ -12,25 +12,42 @@ body { margin:0; padding:0; }
 
 
 #choose {
-    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: 12px/24px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     position: absolute;
     width: 25%;
     top: 0;
     left: 0;
     padding: 10px;
+    background: transparent; 
+    border: none; 
+    box-shadow: none; 
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgb(252, 252, 253);
+    font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+    border-radius: 3px;
+    width: 100px;
+    height: 175px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
 }
 
 .map-overlay .map-overlay-inner {
     background-color: #fff;
-    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 10px;
+    width: 90%; 
 }
 
 .map-overlay table {
     border: none;
-    width: 150px;
+    width: 100px;
 }
 
 .map-overlay h2 {
@@ -40,10 +57,11 @@ body { margin:0; padding:0; }
 }
 
 .map-overlay label {
-    font: 16px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: 16px/24px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     vertical-align: bottom;
     margin: 0;
     padding: 0;
+    margin-top: 5px; 
 }
 
 .map-overlay .legend .bar {
@@ -60,56 +78,58 @@ body { margin:0; padding:0; }
 }
 
 .map-overlay p.credit {
-   margin: 5px 0 0 0;
-   padding: 0;
+    margin: 5px 0 0 0;
+    padding: 0;
 }
 
-#legend {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: rgb(252, 252, 253);
-  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
-  overflow: auto;
-  border-radius: 3px;
-  width: 285px;
-  height: 70px;
-}
-
-.color-bar {
-  background: linear-gradient(to right, rgba(16, 198, 156, 0.1), rgb(16, 198, 156));
-  margin-left: 40px; /* Adjust the margin */
-  margin-top: 5px;
-  width: 200px; /* Adjust the width */
-  height: 10px; /* Adjust the height */
-  display: inline-block; /* Corrected property value */
-}
-
-.label {
-  width: 45%;
-  display: inline-block;
-  text-align: center;
-  font-size: 12px;
-  margin-top: 5px;
-  margin-bottom: 3px;
-}
-
-#legend_text {
-  font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
-  font-weight: bold;
-  font-size: 12px;
-  margin-top: 5px;
-  margin-bottom: 3px;
-  text-align: center;
-}
-        
 .cityfly {
     font-size: 15px;
     width: 200px;
 }
 
+#container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 
+#main {
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+    margin-top: 50px;
+}
 
+/* Style the legend */
+        
+        #legend, #legend2 {
+            margin-left: 15px;
+        }
+
+        #legend_text, #legend2_text {
+            font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+
+        .legend-key, .legend2-key {
+            display: inline-block;
+            border-radius: 20%;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
+
+        #legend span, #legend2 span {
+            font-size: 12px;
+            font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -121,8 +141,8 @@ body { margin:0; padding:0; }
     <div class='map-overlay-inner'>
         <h2>England Ageing Density Map</h2>
 		<table><tr><td>
-  		<input type="radio" name="layers" id="layer1" value="Employment" checked><label>Aging population 3D &nbsp; &nbsp;</label>
-  		<input type="radio" name="layers" id="layer2" value="Residents"><label>Aging population 2D </label>
+  		<input type="radio" name="layers" id="layer1" value="Aging Population 3D" checked><label>Aging Population 3D &nbsp; &nbsp;</label>
+  		<input type="radio" name="layers" id="layer2" value="Aging Population 2D"><label>Aging Population 2D </label>
          </td>
          </tr>
          <tr><td> <p class="cityfly">Fly To Low-ageing cities: 
@@ -140,27 +160,74 @@ body { margin:0; padding:0; }
         <p class="credit">Data source: 
             <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">Census 2011, Office for Nat. Statistics</a >.
         </p >
+
 </div>
 </div>
-<div class="map-overlay" id="legend">
-            <div class='session'>
-                <p id="legend_text">The percentages of aging population by MSOA</p >
-                <div class="row colors">
-                    <div class="color-bar"></div>
-                </div>
-                <div class="row labels" id="label">
-                  <div class='label'>Min: 0.6901%</div>
-                  <div class='label'>Max: 59.3983%</div>
-                </div>
-             </div>
-</div>
-    <div class='map-overlay' id="local">
-    <div class='map-overlay-inner'>
-        <h2 id="TCITY15NM">Hover over a local authority</h2>
-	</div>
-</div>
+<div id="legend" class="map-overlay"></div>
+<div id="legend2" class="map-overlay"></div>
+
 
     <script>
+        function updateLegend1() {
+    // Clear previous legend items
+    legend.innerHTML = '';
+
+    // Add legend title
+    const legendTitle = document.createElement('h3');
+    legendTitle.textContent = 'Aging population by MSOA';
+    legendTitle.style.fontSize = '12px';
+    legend.appendChild(legendTitle);
+
+    // Define layer names and colors
+    const layers = ['0-13%', '13%-25%', '25%-30%', '30%-45%', '45%-52%', '52%-57%'];
+    const colors = ['rgb(69, 117, 180)', 'rgb(145, 191, 219)', 'rgb(224, 243, 248)', 'rgb(254, 224, 144)', 'rgb(252, 141, 89)', 'rgb(215, 48, 39)'];
+
+    // Add legend items
+    layers.forEach((layer, i) => {
+        const color = colors[i];
+        const item = document.createElement('div');
+        const key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        const value = document.createElement('span');
+        value.innerHTML = `${layer}`;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+    });
+}
+
+// Update legend2 content
+function updateLegend2() {
+    // Clear previous legend items
+    legend2.innerHTML = '';
+
+    // Add legend title
+    const legendTitle2 = document.createElement('h3');
+    legendTitle2.textContent = 'Aging population by MSOA';
+    legendTitle2.style.fontSize = '12px';
+    legend2.appendChild(legendTitle2);
+
+    // Define layer names and colors for legend2
+    const layers2 = ['0-500', '500-1000', '1000-2000', '2000-3000', '3000-3500', '3500-4700']; // Update with your desired layer names
+    const colors2 = ['rgb(69, 117, 180)', 'rgb(145, 191, 219)', 'rgb(224, 243, 248)', 'rgb(254, 224, 144)', 'rgb(252, 141, 89)', 'rgb(215, 48, 39)']; // Update with your desired colors
+
+    // Add legend items for legend2
+    layers2.forEach((layer, i) => {
+        const color = colors2[i];
+        const item = document.createElement('div');
+        const key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        const value = document.createElement('span');
+        value.innerHTML = `${layer}`;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend2.appendChild(item);
+    });
+}
 
 
     mapboxgl.accessToken = 'pk.eyJ1IjoieWl4aWFvemhhbyIsImEiOiJjbHI3cjZuNHowd2xsMmtweGduZXprZmZ6In0.PP8ZZ29_wQekzXNWsjV29w'; // Put your Mapbox Public Access token here
@@ -175,13 +242,66 @@ body { margin:0; padding:0; }
     });
 
 
-    map.on('load', function() {
-      // Set global light properties which influence 3D layer shadows
-      map.setLight({color: "#fff", intensity: 0.15, position: [1.15, 210, 30]});
-      // Add standard navigation control
-      map.addControl(new mapboxgl.NavigationControl());
-
-    // Load the 3D employment hexagon layer as a fill-extrusion type
+map.on('load', function() {
+// Set global light properties which influence 3D layer shadows
+map.setLight({color: "#fff", intensity: 0.15, position: [1.15, 210, 30]});
+// Add standard navigation control
+map.addControl(new mapboxgl.NavigationControl());
+// Add the fill layer
+map.addLayer({
+    id: 'Age_pop1-3ghhr9',
+    type: 'fill',
+    source: {
+      type: 'vector',
+      url: 'mapbox://yixiaozhao.aito387i' // Your Mapbox tileset Map ID
+    },
+    'source-layer': 'Age_pop1-9rhc97',
+    paint: {
+                "fill-color": [
+        "interpolate",
+        [
+          "linear"
+        ],
+        [
+          "get",
+          "old_prc"
+        ],
+        0,
+        "rgb(69, 117, 180)",
+        0.130,
+        "rgb(145, 191, 219)",
+        0.250,
+        "rgb(224, 243, 248)",
+        0.300,
+        "rgb(254, 224, 144)",
+        0.450,
+        "rgb(252, 141, 89)",
+        0.520,
+        "rgb(215, 48, 39)"
+      ],
+      'fill-outline-color': 'rgb(145, 191, 219)'
+    }
+  });
+        
+// Initialize legends
+        updateLegend2();
+        updateLegend1();
+// Add the fill layer
+  map.addLayer({
+    id: 'Major_Towns',
+    type: 'line',
+    source: {
+      type: 'vector',
+      url: 'mapbox://yixiaozhao.9stlfkwl' // Your Mapbox tileset Map ID
+    },
+    'source-layer': 'Major_Towns_and_Cities_Dec_20-13ixh4',
+       paint: {
+           'line-color': '#adf',
+                'line-width': 4
+                },
+  });
+        
+ // Load the 3D employment hexagon layer as a fill-extrusion type
       map.addLayer({
         id: 'EngWal_Hex_Emp',
         type: 'fill-extrusion',
@@ -192,23 +312,34 @@ body { margin:0; padding:0; }
         'source-layer': 'Data-avpp0m', // name of tileset
         paint: {
             'fill-extrusion-color': {
-                property: 'old_percen',
+                property: 'old',
                 type: 'exponential',
                 stops: [
-                    [0, '#dffbf8'],
-                    [0.1, '#dffbf8'],
-                    [0.3, '#88ddc9'],
-                    [0.4, '#10c69c'],
-                    [0.5, '#066f57']]
+                    [500, '#4575b4'],
+                    [1000, '#91bfdb'],
+                    [2000, '#e0f3f8'],
+                    [3000, '#fee090'],
+                    [4000, '#fc8d59'],
+                    [4500, '#d73027']]
             },
             'fill-extrusion-height': [
-            'case',
-            ['<', ['get', 'old_percen'], 0.1], 
-            ['*', ['number', ['get', 'old_percen'], 10], 1000], // 
-            ['<', ['get', 'old_percen'], 0.3],
-            ['*', ['number', ['get', 'old_percen'], 10], 5000], // 
-            ['*', ['number', ['get', 'old_percen'], 10], 30000]  // 
-        ],  //expression that controls the extrusion height based on employment attribute Emp2011
+    'case',
+    ['<', ['get', 'old'], 500], 
+    ['*', ['number', ['get', 'old'], 1], 1],
+    ['<', ['get', 'old'], 1000], 
+    ['*', ['number', ['get', 'old'], 1], 1],
+    ['<', ['get', 'old'], 2000], 
+    ['*', ['number', ['get', 'old'], 1], 1.5],
+    ['<', ['get', 'old'], 3000], 
+    ['*', ['number', ['get', 'old'], 1], 2],
+    ['<', ['get', 'old'], 3500], 
+    ['*', ['number', ['get', 'old'], 1], 3],
+    ['<', ['get', 'old'], 4000], 
+    ['*', ['number', ['get', 'old'], 1], 6],
+    ['<', ['get', 'old'], 4500], 
+    ['*', ['number', ['get', 'old'], 1], 8],
+    ['*', ['number', ['get', 'old'], 1], 10]  
+],  //expression that controls the extrusion height based on employment attribute Emp2011
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 1,
             'fill-extrusion-opacity-transition': {  //Opacity transition adds a delay when changing the opacity for a smooth layer change effect
@@ -219,6 +350,9 @@ body { margin:0; padding:0; }
       });
 
 
+
+
+               
 // Add the label layer
 	map.addLayer({
 		'id': 'labels',
@@ -240,16 +374,17 @@ body { margin:0; padding:0; }
     ]
 		},
 		'paint': {
-			'text-color': 'rgba(150, 200, 0,0.8)',
+			'text-color': 'rgb(69, 117, 180)',
 			'text-halo-color': '#fff',
 			'text-halo-width': 1
 		}
 	});
 
-// 保存对弹出窗口的引用
+
+// Saving references to popups
 var popup;
 
-// 鼠标进入图层时显示数值
+// Display of values and charts when mousing over layers
 map.on('mouseenter', 'labels', function (e) {
     var townCity = e.features[0].properties['Town/City'];
     var population65to85 = e.features[0].properties['Population aged 65-85'];
@@ -258,33 +393,48 @@ map.on('mouseenter', 'labels', function (e) {
     var rank = e.features[0].properties['Rank'];
     var coordinates = e.features[0].geometry.coordinates.slice();
     
-    // 创建弹出窗口
-    popup = new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML('<h3>' + townCity + '</h3><p>Population aged 65-85: ' + population65to85 + '</p><p>Population aged 85+: ' + population85plus + '</p><p>Total Elderly Population: ' + totalElderlyPopulation + '</p><p>Rank: ' + rank + '</p>')
-        .addTo(map);
+// Creating pop-up windows
+popup = new mapboxgl.Popup()
+    .setLngLat(coordinates)
+    .setHTML('<h3>' + townCity + '</h3><p>Population aged 65-85: ' + population65to85 + '</p><p>Population aged 85+: ' + population85plus + '</p><p>Total Elderly Population: ' + totalElderlyPopulation + '</p><p>Rank: ' + rank + '</p>')
+    .addTo(map);
 });
 
-// 鼠标离开图层时自动移除弹出窗口
+// Automatically removes popup windows when the mouse leaves the layer.
 map.on('mouseleave', 'labels', function () {
-    map.getCanvas().style.cursor = '';
-    if (popup) {
-        popup.remove();
+map.getCanvas().style.cursor = '';
+if (popup) {
+popup.remove();
     }
 });
 
 
 
-        
+
 //Event listener for layer switch
+
 document.getElementById("layer1").addEventListener("click", function(){
+map.setPaintProperty('Age_pop1-3ghhr9','fill-opacity',0);
+map.setPitch(50); 
 map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0.95);
 map.setPitch(50); 
+map.setPaintProperty('Major_Towns','line-opacity',0.95);
+map.setPitch(50); 
+legend2.style.display = 'block';
+legend.style.display = 'none';
+updateLegend2();
 });
 
 document.getElementById("layer2").addEventListener("click", function(){
 map.setPaintProperty('EngWal_Hex_Emp','fill-extrusion-opacity',0);
+map.setPitch(0);
+map.setPaintProperty('Age_pop1-3ghhr9','fill-opacity',0.95);
 map.setPitch(0); 
+map.setPaintProperty('Major_Towns','line-opacity',0);
+map.setPitch(0); 
+legend2.style.display = 'none';
+legend.style.display = 'block';
+updateLegend1();
 });
 
 
@@ -315,6 +465,7 @@ var i;
 		}
 
 });
+
 
 </script>
 
