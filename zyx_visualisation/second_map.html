@@ -396,7 +396,7 @@ map.on('mouseenter', 'labels', function (e) {
 // Creating pop-up windows
 popup = new mapboxgl.Popup()
     .setLngLat(coordinates)
-    .setHTML('<h3>' + townCity + '</h3><p>Population aged 65-85: ' + population65to85 + '</p><p>Population aged 85+: ' + population85plus + '</p><p>Total Elderly Population: ' + totalElderlyPopulation + '</p><p>Rank: ' + rank + '</p>')
+    .setHTML('<h3>' + townCity + '</h3><p>Population aged 65-85: ' + population65to85 +'%</p><p>Population aged 85+: ' + population85plus + '%</p><p>Total Elderly Population: ' + totalElderlyPopulation + '%</p><p>Rank: ' + rank + '</p>')
     .addTo(map);
 });
 
