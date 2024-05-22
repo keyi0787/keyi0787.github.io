@@ -53,7 +53,8 @@
         font-family: Arial, sans-serif;
         border-radius: 3px;
         width: 30%;
-        height: 100vh; 
+        height: 100vh;
+        overflow: auto;
       }
 
       #map {
@@ -71,19 +72,40 @@
         width: 250px;
       }
         
-     #slider-container {
-         position: absolute;
-         top: 90px;
-         left: 30px;
-         background: rgba(210, 203, 203, 0.1);
-         padding: 10px;
-         border-radius: 5px;
-         width: 280px;
-        }
-        
-    #slider{
-        margin-left: 50px;
+    #slider-container {
+      position: absolute;
+      right: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 10px;
     }
+        
+        #slider {
+      -webkit-appearance: none;  /* Override default CSS styles */
+      appearance: none;
+      width: 80%; /* Set the width to 90% of its container */
+      height: 10px; /* Set the slider's height */
+      background: #ddd; /* Light grey background */
+      outline: none; /* Remove the outline on focus */
+      opacity: 0.7; /* Set the opacity to 0.7 */
+      transition: opacity .2s; /* Add a transition effect on hover */
+    }
+
+    #slider:hover {
+      opacity: 1; /* Full opacity on hover */
+    }
+
+    #slider::-webkit-slider-thumb {
+      -webkit-appearance: none; /* Override default look */
+      appearance: none;
+      width: 20px; /* Set a specific slider handle width */
+      height: 20px; /* Slider handle height */
+      background: #91bfdb; 
+      cursor: pointer; /* Cursor on hover */
+      border-radius: 50%; /* Circular handle */
+    }
+
         
     #pd{
         font-family: 'PT Sans Narrow', Helvetica, Arial, Sans-serif;
@@ -91,7 +113,7 @@
     }
       
     #line-text{
-         margin-top: 160px;
+         margin-top: 20px;
     }
         
     #chartContainer { 
@@ -145,7 +167,7 @@
       color: black;
       font-family: 'PT Serif';
       font-size: 10px;
-      margin-top: 5px;
+      margin-bottom: 5px;
     }
     </style>
   </head>
@@ -159,17 +181,24 @@
     <div class="map-overlay" id="summary">
         <h1>World Aging Population</h1>
         <h2>Drag the slider to see the changes of aging persentages over time!</h2>
-        <div class="session" id="slider-container">
-            <p id="charttitle"></p>
-            <input id="slider" type="range" min="1960" max="2022" step="1" value="2022" />
-            <label for="slider" id="year">Year: 2022</label>
-            <div id="pd"><p>Hover over a country!</p></div>
+                <div id="slider-container">
+        <div class='map-overlay-inner'>
+            <table><tr>
+                <td>
+                    <p id="charttitle"></p>
+                    <input id='slider' type='range' min='1960' max='2022' step='1' value='2022' list='tickmarks' />
+                </td>
+                <td>
+                  <label for="slider" id="year">Year: 2022</label>
+                </td>
+                <p id="pd">Hover over a country!</p>
+             </tr></table>
         </div>
         <h2 id="line-text">Mouse over a country to show the line chart!</h2>
         <div id="chartContainer"></div>
         <p class="credit">Data source: 
-            <a href="https://digimap.edina.ac.uk/roam/map/os">OS Digimap</a>.
-            <a href="https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/3">ONS Census</a>.
+            <a href="https://data.worldbank.org/indicator/SP.POP.65UP.TO.ZS">The World Bank</a>.
+            <a href="https://geojson-maps.ash.ms">GeoJson Bounsaries</a>.
         </p>
     </div>
     <div class="map-overlay" id="legend-container">
